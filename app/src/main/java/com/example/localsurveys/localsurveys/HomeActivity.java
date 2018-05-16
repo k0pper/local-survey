@@ -81,19 +81,28 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_home) {
+            // Navigate to Home Activity
         }
+        else if (id == R.id.nav_start) {
+            // Navigate to Survey Start Activity
+        }
+        else if (id == R.id.nav_find) {
+            // Navigate to Find Survey Activity
+        }
+        else if (id == R.id.nav_history) {
+            // Navigate to History Activity
+        }
+        else if (id == R.id.nav_my_surveys) {
+            // Navigate to My Surveys Activity
+        }
+        else if (id == R.id.nav_settings) {
+            // Navigate to Settings Activity
+        }
+        else if (id == R.id.nav_info) {
+            // Navigate to Info Activity
+        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

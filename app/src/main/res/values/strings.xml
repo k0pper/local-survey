@@ -5,4 +5,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="start_survey">Start Survey</string>
+    <string name="find_survey">Find Survey</string>
+    <string name="history">History</string>
+    <string name="my_surveys">My Surveys</string>
+    <string name="settings">Settings</string>
+    <string name="info">Info</string>
 </resources>
