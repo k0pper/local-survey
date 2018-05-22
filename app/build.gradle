@@ -30,7 +30,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
 }
 
-
-
-
 apply plugin: 'com.google.gms.google-services'
