@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.localsurveys.localsurveys.security.LoginActivity;
+import com.example.localsurveys.localsurveys.security.SignupActivity;
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
@@ -16,7 +19,7 @@ public class SplashScreen extends AppCompatActivity {
                 try {
                     // Hard Coded, later: Check for Authentication
                     sleep(3000);
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (InterruptedException e) {

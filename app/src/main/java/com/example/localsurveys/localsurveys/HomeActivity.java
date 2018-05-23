@@ -1,5 +1,6 @@
 package com.example.localsurveys.localsurveys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,26 +10,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.localsurveys.localsurveys.security.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 // BeispielZweig3
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FirebaseAuth auth;
+    private Button btnSignOut;
+    private TextView textUsername;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initializeActivity();
+        handleIntent();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        auth = FirebaseAuth.getInstance();
+        btnSignOut = findViewById(R.id.btn_sign_out);
+
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.signOut();
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -71,23 +87,17 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Navigate to Home Activity
-        }
-        else if (id == R.id.nav_start) {
+        } else if (id == R.id.nav_start) {
             // Navigate to Survey Start Activity
-        }
-        else if (id == R.id.nav_find) {
+        } else if (id == R.id.nav_find) {
             // Navigate to Find Survey Activity
-        }
-        else if (id == R.id.nav_history) {
+        } else if (id == R.id.nav_history) {
             // Navigate to History Activity
-        }
-        else if (id == R.id.nav_my_surveys) {
+        } else if (id == R.id.nav_my_surveys) {
             // Navigate to My Surveys Activity
-        }
-        else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_settings) {
             // Navigate to Settings Activity
-        }
-        else if (id == R.id.nav_info) {
+        } else if (id == R.id.nav_info) {
             // Navigate to Info Activity
         }
 
@@ -95,5 +105,34 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void initializeActivity() {
+        setContentView(R.layout.activity_home_activity);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void handleIntent() {
+        Bundle extras = getIntent().getExtras();
+        String username;
+        if (extras != null) {
+            username = extras.getString("USERNAME");
+        } else {
+            username = "NO USERNAME";
+        }
+
+        View headerView = navigationView.getHeaderView(0);
+        textUsername = headerView.findViewById(R.id.username);
+        textUsername.setText(username);
     }
 }
