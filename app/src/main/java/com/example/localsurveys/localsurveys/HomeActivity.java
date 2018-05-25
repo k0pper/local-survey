@@ -2,6 +2,7 @@ package com.example.localsurveys.localsurveys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,6 +32,14 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         initializeActivity();
         handleIntent();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(HomeActivity.this, AddSurvey.class));
+                }
+        });
 
 
         auth = FirebaseAuth.getInstance();

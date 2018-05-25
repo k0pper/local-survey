@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.localsurveys.localsurveys.AddSurvey">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Title"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="298dp"
+        android:layout_height="24dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="112dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Radius"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="82dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="m"
+        tools:layout_editor_absoluteX="314dp"
+        tools:layout_editor_absoluteY="121dp"
+        tools:ignore="MissingConstraints" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="348dp"
+        android:layout_height="13dp"
+        android:text="Public"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="356dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Availability"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="169dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="215dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="298dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date"
+        android:text="11/05/2018 00:00:00"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="214dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date"
+        android:text="11/05/2018 00:00:00"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="284dp"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>
