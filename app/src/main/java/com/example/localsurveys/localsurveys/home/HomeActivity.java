@@ -1,9 +1,11 @@
-package com.example.localsurveys.localsurveys;
+package com.example.localsurveys.localsurveys.home;
 
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,7 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.localsurveys.localsurveys.security.LoginActivity;
+import com.example.localsurveys.localsurveys.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 // BeispielZweig3
@@ -26,6 +28,7 @@ public class HomeActivity extends AppCompatActivity
     private Button btnSignOut;
     private TextView textUsername;
     private NavigationView navigationView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,27 +36,22 @@ public class HomeActivity extends AppCompatActivity
         initializeActivity();
         handleIntent();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, AddSurvey.class));
-                }
-        });
+        toolbar = findViewById(R.id.toolbar);
 
 
-        auth = FirebaseAuth.getInstance();
-        btnSignOut = findViewById(R.id.btn_sign_out);
+//        auth = FirebaseAuth.getInstance();
+//        btnSignOut = findViewById(R.id.btn_sign_out);
+//
+//        btnSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                auth.signOut();
+//                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+//                finish();
+//            }
+//        });
 
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                auth.signOut();
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-
+        showFragment(new SurveyOverviewFragment());
     }
 
     @Override
@@ -69,7 +67,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home_activity, menu);
+        getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
     }
 
@@ -143,5 +141,12 @@ public class HomeActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         textUsername = headerView.findViewById(R.id.username);
         textUsername.setText(username);
+    }
+
+    public void showFragment(Fragment fragment){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 }

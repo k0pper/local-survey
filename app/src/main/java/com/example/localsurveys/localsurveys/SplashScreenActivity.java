@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.localsurveys.localsurveys.security.LoginActivity;
-import com.example.localsurveys.localsurveys.security.SignupActivity;
+import com.example.localsurveys.localsurveys.login.LoginActivity;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context="com.example.localsurveys.localsurveys.security.SignupActivity">
+    tools:context="com.example.localsurveys.localsurveys.login.SignupActivity">
 
     <ImageView
         android:id="@+id/image"

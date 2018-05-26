@@ -1,4 +1,4 @@
-package com.example.localsurveys.localsurveys.security;
+package com.example.localsurveys.localsurveys.login;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
