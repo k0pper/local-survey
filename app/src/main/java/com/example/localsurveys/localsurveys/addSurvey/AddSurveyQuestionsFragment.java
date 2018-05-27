@@ -57,9 +57,7 @@ public class AddSurveyQuestionsFragment extends Fragment {
                     }
                     ((AddSurveyActivity) getActivity()).addQuestionToSurvey(question);
                     ((AddSurveyActivity) getActivity()).showFragment(new AddSurveyQuestionsOverviewFragment());
-
                 }
-
             }
         });
 

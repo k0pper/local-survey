@@ -1,5 +1,6 @@
 package com.example.localsurveys.localsurveys.addSurvey;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.home.HomeActivity;
+import com.example.localsurveys.localsurveys.home.SurveyOverviewFragment;
 import com.example.localsurveys.localsurveys.models.Question;
 import com.example.localsurveys.localsurveys.models.Survey;
 import com.example.localsurveys.localsurveys.models.User;
@@ -53,5 +56,10 @@ public class AddSurveyActivity extends AppCompatActivity {
 
     public Survey getSurvey() {
         return survey;
+    }
+
+    public void onSurveyComplided() {
+        //TODO: send survey to database
+        startActivity(new Intent(this, HomeActivity.class));
     }
 }

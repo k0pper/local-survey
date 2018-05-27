@@ -18,6 +18,7 @@ import java.util.List;
 public class AddSurveyQuestionsOverviewFragment extends Fragment {
 
     private FloatingActionButton addSurveyQuestionsOverviewFab;
+    private FloatingActionButton addSurveyQuestionsOverviewFabStartSurvey;
     private static String[] placeholderList = {"No Question added yet"};
 
     @Override
@@ -27,6 +28,7 @@ public class AddSurveyQuestionsOverviewFragment extends Fragment {
         ListView listView;
 
         addSurveyQuestionsOverviewFab = rootView.findViewById(R.id.add_survey_questions_overview__fab);
+        addSurveyQuestionsOverviewFabStartSurvey = rootView.findViewById(R.id.add_survey_questions_overview__fab_start_survey);
 
         Survey survey = ((AddSurveyActivity) getActivity()).getSurvey();
 
@@ -36,6 +38,7 @@ public class AddSurveyQuestionsOverviewFragment extends Fragment {
 
         if (!survey.getListOfQuestionStrings().isEmpty()) {
             list = survey.getListOfQuestionStrings();
+            addSurveyQuestionsOverviewFabStartSurvey.setVisibility(View.VISIBLE);
         } else {
             list = Arrays.asList(placeholderList);
         }
@@ -50,6 +53,14 @@ public class AddSurveyQuestionsOverviewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((AddSurveyActivity) getActivity()).showFragment(new AddSurveyQuestionsFragment());
+            }
+        });
+
+        addSurveyQuestionsOverviewFabStartSurvey.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                ((AddSurveyActivity) getActivity()).onSurveyComplided();
             }
         });
 
