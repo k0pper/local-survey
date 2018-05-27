@@ -9,9 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.models.Question;
+import com.example.localsurveys.localsurveys.models.Survey;
+import com.example.localsurveys.localsurveys.models.User;
 
 public class AddSurveyActivity extends AppCompatActivity {
 
+    private Survey survey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +24,8 @@ public class AddSurveyActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_add_survey);
         setSupportActionBar(toolbar);
 
-        showFragment(new AddSurveyFragment());
+        showFragment(new AddSurveyConfigurationFragment());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,4 +41,13 @@ public class AddSurveyActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
     }
+
+    public void createSurveyWithConfiguration(String title, int radius, long fromDate, long toDate) {
+        survey = new Survey(title, radius,new User(), fromDate, toDate);
+    }
+
+    public void addQuestionToSurvey(Question question){
+
+    }
+
 }
