@@ -1,7 +1,6 @@
 package com.example.localsurveys.localsurveys.addSurvey;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -48,8 +47,8 @@ public class AddSurveyActivity extends AppCompatActivity {
         survey = new Survey(title, radiusDigit, new User(), fromDate, toDate);
     }
 
-    public void addQuestionToSurvey(Question question){
-
+    public void addQuestionToSurvey(Question question) {
+        survey.addQuestion(question);
     }
 
     public Survey getSurvey() {

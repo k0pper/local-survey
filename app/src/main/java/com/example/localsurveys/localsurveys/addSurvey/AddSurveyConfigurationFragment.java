@@ -22,7 +22,7 @@ public class AddSurveyConfigurationFragment extends Fragment {
     private EditText availabilityFromDateView;
     private EditText availabilityToDateView;
 
-    FloatingActionButton addSurveyConfigurationFab;
+    private FloatingActionButton addSurveyConfigurationFab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

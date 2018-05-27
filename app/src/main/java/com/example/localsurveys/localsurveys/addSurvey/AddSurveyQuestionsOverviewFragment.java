@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AddSurveyQuestionsOverviewFragment extends Fragment {
 
-    private FloatingActionButton addSurveyQuestionsFab;
+    private FloatingActionButton addSurveyQuestionsOverviewFab;
     private static String[] placeholderList = {"No Question added yet"};
 
     @Override
@@ -26,7 +26,7 @@ public class AddSurveyQuestionsOverviewFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_survey_questions_overview, container, false);
         ListView listView;
 
-        addSurveyQuestionsFab = rootView.findViewById(R.id.add_survey_questions_overview__fab);
+        addSurveyQuestionsOverviewFab = rootView.findViewById(R.id.add_survey_questions_overview__fab);
 
         Survey survey = ((AddSurveyActivity) getActivity()).getSurvey();
 
@@ -44,6 +44,14 @@ public class AddSurveyQuestionsOverviewFragment extends Fragment {
                 list);
 
         listView.setAdapter(adapter);
+
+        addSurveyQuestionsOverviewFab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                ((AddSurveyActivity) getActivity()).showFragment(new AddSurveyQuestionsFragment());
+            }
+        });
 
         return rootView;
     }
