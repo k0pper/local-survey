@@ -2,7 +2,7 @@ package com.example.localsurveys.localsurveys.models;
 
 import java.util.List;
 
-class Question {
+public class Question {
 
     private String id;
     private String text;

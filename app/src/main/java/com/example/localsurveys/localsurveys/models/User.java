@@ -1,6 +1,6 @@
 package com.example.localsurveys.localsurveys.models;
 
-class User {
+public class User {
 //Nickname, Pro_User, Vorname, Nachname, E-Mail-Adresse
     private String id;
     private boolean isProUser;
@@ -8,13 +8,8 @@ class User {
     private String lastName;
     private String eMail;
 
-
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public boolean isProUser() {
