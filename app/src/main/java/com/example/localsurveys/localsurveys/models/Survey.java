@@ -73,4 +73,12 @@ public class Survey {
     public void addQuestion(Question question) {
         this.questions.add(question);
     }
+
+    public List<String> getListOfQuestionStrings() {
+        List<String> questionStrings = new ArrayList<>();
+        for (Question question : this.questions) {
+            questionStrings.add(question.getText());
+        }
+        return questionStrings;
+    }
 }
