@@ -11,7 +11,6 @@ import android.view.Menu;
 
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.home.HomeActivity;
-import com.example.localsurveys.localsurveys.home.SurveyOverviewFragment;
 import com.example.localsurveys.localsurveys.models.Question;
 import com.example.localsurveys.localsurveys.models.Survey;
 import com.example.localsurveys.localsurveys.models.User;
@@ -26,8 +25,7 @@ public class AddSurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_survey);
         Toolbar toolbar = findViewById(R.id.toolbar_add_survey);
         setSupportActionBar(toolbar);
-
-        showFragment(new AddSurveyConfigurationFragment());
+        showFragment(new AddSurveyConfigurationFragment(), false);
     }
 
     @Override
@@ -39,9 +37,14 @@ public class AddSurveyActivity extends AppCompatActivity {
 
 
     public void showFragment(Fragment fragment) {
+        showFragment(fragment, true);
+    }
+
+    public void showFragment(Fragment fragment, boolean addToBackStack) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
+        if (addToBackStack) transaction.addToBackStack(null);
         transaction.commit();
     }
 
