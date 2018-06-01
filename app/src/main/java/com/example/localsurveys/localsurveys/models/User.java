@@ -1,5 +1,7 @@
 package com.example.localsurveys.localsurveys.models;
 
+import java.util.UUID;
+
 public class User {
 //Nickname, Pro_User, Vorname, Nachname, E-Mail-Adresse
     private String id;
@@ -7,6 +9,16 @@ public class User {
     private String firstName;
     private String lastName;
     private String eMail;
+
+    public User() {
+
+    }
+
+    public User (String email) {
+        this.id = UUID.randomUUID().toString();
+        this.eMail = email;
+        this.isProUser = false;
+    }
 
     public String getId() {
         return id;

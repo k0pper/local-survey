@@ -15,12 +15,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.localsurveys.localsurveys.firebase.FirebaseHelper;
 import com.example.localsurveys.localsurveys.home.HomeActivity;
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -33,6 +37,8 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private ImageView image;
     private EditText inputPassword2;
+    private FirebaseHelper helper;
+    private DatabaseReference db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,9 @@ public class SignupActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 image.setVisibility(View.INVISIBLE);
 
+                db = FirebaseDatabase.getInstance().getReference();
+                helper = new FirebaseHelper(db);
+
                 //create user
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
@@ -112,6 +121,8 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Registrierung fehlgeschlagen.",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+                                    User user = new User(inputEmail.getText().toString());
+                                    helper.saveUser(user);
                                     startActivity(new Intent(SignupActivity.this, HomeActivity.class));
                                     finish();
                                 }
