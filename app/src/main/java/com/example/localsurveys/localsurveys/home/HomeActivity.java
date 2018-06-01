@@ -19,7 +19,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.info.InfoActivity;
 import com.example.localsurveys.localsurveys.login.LoginActivity;
+import com.example.localsurveys.localsurveys.settings.SettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 // BeispielZweig3
@@ -85,15 +87,18 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_find) {
             // Navigate to Find Survey Activity
         } else if (id == R.id.nav_history) {
-            // Navigate to History Activity
+
         } else if (id == R.id.nav_my_surveys) {
-            // Navigate to My Surveys Activity
+
         } else if (id == R.id.nav_settings) {
-            // Navigate to Settings Activity
+            startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {
             auth.signOut();
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             finish();
+        }
+        else if (id == R.id.nav_info) {
+            startActivity(new Intent(HomeActivity.this, InfoActivity.class));
         }
 
 
@@ -115,7 +120,6 @@ public class HomeActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        toolbar = findViewById(R.id.toolbar);
     }
 
     public void handleIntent() {

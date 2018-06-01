@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.localsurveys.localsurveys.login.LoginActivity;
+import com.google.firebase.FirebaseApp;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -12,6 +13,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        FirebaseApp.initializeApp(this);
         Thread myThread = new Thread() {
             @Override
             public void run() {
