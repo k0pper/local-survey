@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
         if (auth.getCurrentUser() != null) {
             Intent i = new Intent(LoginActivity.this, HomeActivity.class);
             String username = auth.getCurrentUser().getEmail();
@@ -43,18 +42,8 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-
-        setContentView(R.layout.activity_login);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
-        textViewSignUp = (TextView) findViewById(R.id.btn_sign_up);
-        btnLogin = (Button) findViewById(R.id.btn_back);
-        textViewReset = (TextView) findViewById(R.id.btn_reset_password);
-        image = (ImageView) findViewById(R.id.image);
-
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        initializeActivity();
+        fillWithTestUser();
 
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,5 +106,20 @@ public class LoginActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    private void initializeActivity() {
+        inputEmail = (EditText) findViewById(R.id.email);
+        inputPassword = (EditText) findViewById(R.id.password);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        textViewSignUp = (TextView) findViewById(R.id.btn_sign_up);
+        btnLogin = (Button) findViewById(R.id.btn_back);
+        textViewReset = (TextView) findViewById(R.id.btn_reset_password);
+        image = (ImageView) findViewById(R.id.image);
+    }
+
+    private void fillWithTestUser() {
+        inputEmail.setText(R.string.test_user);
+        inputPassword.setText(R.string.test_user_password);
     }
 }

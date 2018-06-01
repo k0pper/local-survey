@@ -1,6 +1,7 @@
 package com.example.localsurveys.localsurveys.home;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 // BeispielZweig3
@@ -25,7 +27,6 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth auth;
-    private Button btnSignOut;
     private TextView textUsername;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -35,22 +36,7 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         initializeActivity();
         handleIntent();
-
-        toolbar = findViewById(R.id.toolbar);
-
-
-//        auth = FirebaseAuth.getInstance();
-//        btnSignOut = findViewById(R.id.btn_sign_out);
-//
-//        btnSignOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                auth.signOut();
-//                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-//                finish();
-//            }
-//        });
-
+        auth = FirebaseAuth.getInstance();
         showFragment(new SurveyOverviewFragment());
     }
 
@@ -104,8 +90,10 @@ public class HomeActivity extends AppCompatActivity
             // Navigate to My Surveys Activity
         } else if (id == R.id.nav_settings) {
             // Navigate to Settings Activity
-        } else if (id == R.id.nav_info) {
-            // Navigate to Info Activity
+        } else if (id == R.id.nav_logout) {
+            auth.signOut();
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
         }
 
 
@@ -127,6 +115,7 @@ public class HomeActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        toolbar = findViewById(R.id.toolbar);
     }
 
     public void handleIntent() {
@@ -143,7 +132,7 @@ public class HomeActivity extends AppCompatActivity
         textUsername.setText(username);
     }
 
-    public void showFragment(Fragment fragment){
+    public void showFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);

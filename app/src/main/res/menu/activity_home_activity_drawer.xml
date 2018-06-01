@@ -47,4 +47,13 @@
             android:title="@string/info" />
     </group>
 
+    <group
+        android:id="@+id/menu_logout"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_vpn_key_black_24dp"
+            android:title="@string/btn_logout" />
+    </group>
+
 </menu>
