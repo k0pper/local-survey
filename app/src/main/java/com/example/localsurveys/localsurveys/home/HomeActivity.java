@@ -24,7 +24,6 @@ import com.example.localsurveys.localsurveys.login.LoginActivity;
 import com.example.localsurveys.localsurveys.settings.SettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-// BeispielZweig3
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

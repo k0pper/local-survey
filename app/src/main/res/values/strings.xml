@@ -61,4 +61,9 @@
     <string name="title_survey_list">Surveys</string>
     <string name="title_survey_detail">Survey Detail</string>
 
+    Strings for Home Screen
+    <string name="home_hello">Hello</string>
+    <string name="home_text">Why don\'t you check out one of those surveys?\nCan\'t see one? Start your own\nor check out the menu on the left for more options</string>
+    <string name="home_start_survey">Want to start your own survey?\nJust click the button</string>
+
 </resources>

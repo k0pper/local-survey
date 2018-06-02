@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.localsurveys.localsurveys"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.localsurveys.localsurveys">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,7 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".home.HomeActivity" />
+        <activity
+            android:name=".home.HomeActivity"
+            android:label="Local Surveys"/>
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.SignupActivity" />
         <activity android:name=".addSurvey.AddSurveyActivity" />
@@ -33,10 +35,10 @@
             android:label="@string/settings" />
         <activity
             android:name=".info.InfoActivity"
-            android:label="@string/information">
-        </activity>
+            android:label="@string/information"></activity>
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
 
