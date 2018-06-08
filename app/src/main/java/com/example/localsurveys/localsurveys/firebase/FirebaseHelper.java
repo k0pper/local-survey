@@ -37,6 +37,22 @@ public class FirebaseHelper {
         return saved;
     }
 
+    public Boolean saveSurveyTest(Survey survey) {
+        if (survey == null) {
+            saved = false;
+        } else {
+            try {
+                db.child("Survey").push().setValue(survey);
+                saved = true;
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+                saved = false;
+            }
+        }
+
+        return saved;
+    }
+
     public Boolean saveUser(User user) {
         if (user == null) {
             return false;

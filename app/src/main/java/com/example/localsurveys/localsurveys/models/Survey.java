@@ -13,7 +13,11 @@ public class Survey {
     private User user;
     private long fromDate;
     private long toDate;
-    private List<Question> questions;
+    private ArrayList<Question> questions;
+
+    public Survey() {
+        this.questions = new ArrayList<>();
+    }
 
     public Survey(String title, int radius, User user, long fromDate, long toDate) {
         this.title = title;
