@@ -2,7 +2,7 @@ package com.example.localsurveys.localsurveys.models;
 
 import java.util.UUID;
 
-class AnswerOption {
+public class AnswerOption {
 
     private String id;
     private String text;

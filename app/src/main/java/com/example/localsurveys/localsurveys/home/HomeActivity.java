@@ -4,7 +4,6 @@ package com.example.localsurveys.localsurveys.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,14 +12,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.adapters.CustomAdapter;
@@ -39,7 +37,7 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth auth;
+    // UI
     private TextView textUsername;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -49,17 +47,20 @@ public class HomeActivity extends AppCompatActivity
     private ArrayList<Survey> surveys;
     private ListView surveyListView;
 
-    private FirebaseHelper helper;
-    private DatabaseReference db;
+    // Firebase
+    FirebaseAuth auth;
+    DatabaseReference db;
+    FirebaseHelper helper;
+    CustomAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeActivity();
+        initializeUI();
+        setupFirebaseAndAdapter();
         handleIntent();
-        auth = FirebaseAuth.getInstance();
-        showFragment(new SurveyOverviewFragment());
+        // showFragment(new SurveyOverviewFragment());
     }
 
     @Override
@@ -106,18 +107,13 @@ public class HomeActivity extends AppCompatActivity
             // Navigate to Survey Start Activity
         } else if (id == R.id.nav_find) {
             // Navigate to Find Survey Activity
-        } else if (id == R.id.nav_history) {
-
-        } else if (id == R.id.nav_my_surveys) {
-
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {
             auth.signOut();
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             finish();
-        }
-        else if (id == R.id.nav_info) {
+        } else if (id == R.id.nav_info) {
             startActivity(new Intent(HomeActivity.this, InfoActivity.class));
         }
 
@@ -127,7 +123,7 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    public void initializeActivity() {
+    public void initializeUI() {
         setContentView(R.layout.activity_home_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,17 +135,17 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         surveyListView = (ListView) findViewById(R.id.survey_list);
-        db = FirebaseDatabase.getInstance().getReference();
-        helper = new FirebaseHelper(db);
-        surveys = new ArrayList<Survey>();
 
         testButton = (Button) findViewById(R.id.add_button);
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Survey testSurvey = new Survey("title", 20, new User("rofl@kopter.de"), 30000, 310000);
-                saveSurvey(testSurvey);
-                Toast.makeText(HomeActivity.this, "Survey saved", Toast.LENGTH_SHORT);
+                Survey testSurvey = Survey.random();
+                try {
+                    saveSurvey(testSurvey);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -178,6 +174,16 @@ public class HomeActivity extends AppCompatActivity
         textUsername.setText(username);
     }
 
+    private void setupFirebaseAndAdapter() {
+        Log.d("TEST", "Initializing Firebase");
+        this.auth = FirebaseAuth.getInstance();
+        this.db = FirebaseDatabase.getInstance().getReference().child("Survey");
+        this.helper = new FirebaseHelper(db);
+        Log.d("TEST", "Initialized Firebase!");
+        adapter = new CustomAdapter(this, helper.retrieve());
+        surveyListView.setAdapter(adapter);
+    }
+
     public void showFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -186,12 +192,17 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void getSurveys() {
-        surveys = helper.retrieve();
-        ListAdapter customAdapter = new CustomAdapter(this, surveys);
-        surveyListView.setAdapter(customAdapter);
+        adapter = new CustomAdapter(HomeActivity.this, helper.retrieve());
+        surveyListView.setAdapter(adapter);
     }
 
-    public void saveSurvey(Survey survey) {
-        helper.saveSurveyTest(survey);
+    public void saveSurvey(Survey survey) throws InterruptedException {
+        Log.d("TEST", "Saving survey to Database ...");
+        Boolean saved;
+        if (saved = helper.saveSurveyTest(survey)) {
+            getSurveys();
+        }
+        Log.d("TEST", "Saving success? : " + saved );
     }
+
 }

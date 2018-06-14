@@ -2,6 +2,7 @@ package com.example.localsurveys.localsurveys.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class Survey {
@@ -10,24 +11,14 @@ public class Survey {
     private String id;
     private String title;
     private int radius;
-    private User user;
     private long fromDate;
     private long toDate;
+    private User user;
     private ArrayList<Question> questions;
 
     public Survey() {
-        this.questions = new ArrayList<>();
-    }
-
-    public Survey(String title, int radius, User user, long fromDate, long toDate) {
-        this.title = title;
-        this.radius = radius;
-        this.user = user;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-
         this.id = UUID.randomUUID().toString();
-        questions = new ArrayList<>();
+        this.questions = new ArrayList<>();
     }
 
     public String getId() {
@@ -38,40 +29,49 @@ public class Survey {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Survey setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public int getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public Survey setRadius(int radius) {
         this.radius = radius;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public Survey setUser(User user) {
         this.user = user;
+        return this;
     }
 
     public long getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(long fromDate) {
+    public Survey setFromDate(long fromDate) {
         this.fromDate = fromDate;
+        return this;
     }
 
     public long getToDate() {
         return toDate;
     }
 
-    public void setToDate(long toDate) {
+    public Survey setToDate(long toDate) {
         this.toDate = toDate;
+        return this;
+    }
+
+    public String getLength() {
+        return questions.size() + "";
     }
 
     public void addQuestion(Question question) {
@@ -84,5 +84,19 @@ public class Survey {
             questionStrings.add(question.getText());
         }
         return questionStrings;
+    }
+
+    public static Survey random() {
+        Random r = new Random();
+        char c = (char) (r.nextInt(26) + 'a');
+
+        Survey s = new Survey();
+            s.setTitle(c + "(title)")
+                    .setFromDate(r.nextLong())
+                    .setToDate(r.nextLong())
+                    .setUser(new User("testuser@gmx.de"))
+                    .setRadius(r.nextInt());
+
+            return s;
     }
 }

@@ -19,7 +19,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 try {
                     // Hard Coded, later: Check for Authentication
-                    sleep(3000);
+                    sleep(1000);
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();

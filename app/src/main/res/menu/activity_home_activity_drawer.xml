@@ -20,20 +20,6 @@
             android:title="@string/find_survey" />
     </group>
 
-
-    <group
-        android:id="@+id/menu_browse"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_access_time_black_24dp"
-            android:title="@string/history" />
-        <item
-            android:id="@+id/nav_my_surveys"
-            android:icon="@drawable/ic_insert_chart_black_24dp"
-            android:title="@string/my_surveys" />
-    </group>
-
     <group
         android:id="@+id/menu_info"
         android:checkableBehavior="single">

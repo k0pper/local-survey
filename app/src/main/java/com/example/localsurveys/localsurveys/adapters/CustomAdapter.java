@@ -3,10 +3,11 @@ package com.example.localsurveys.localsurveys.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
@@ -18,27 +19,53 @@ import java.util.ArrayList;
  * Created by alexandermiller on 08.06.18.
  */
 
-public class CustomAdapter extends ArrayAdapter<Survey> {
+public class CustomAdapter extends BaseAdapter {
+    Context c;
+    ArrayList<Survey> surveys;
 
+    public CustomAdapter(Context c, ArrayList<Survey> surveys) {
+        this.c = c;
+        this.surveys = surveys;
+    }
 
-    public CustomAdapter(@NonNull Context context, ArrayList<Survey> surveys) {
-        super(context, R.layout.survey_item, surveys);
+    @Override
+    public int getCount() {
+        return surveys.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return surveys.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View customView = inflater.inflate(R.layout.survey_item, parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(c).inflate(R.layout.survey_item, parent, false);
+        }
 
-        Survey singleSurvey = getItem(position);
+        final Survey s = (Survey) this.getItem(position);
 
-        TextView surveyName = (TextView) customView.findViewById(R.id.survey_name);
-        TextView surveyQuestions = (TextView) customView.findViewById(R.id.survey_questions);
+        TextView titleTxt = (TextView) convertView.findViewById(R.id.survey_name);
+        TextView questionsTxt = (TextView) convertView.findViewById(R.id.survey_questions);
 
-        surveyName.setText(singleSurvey.getId());
-        // surveyQuestions.setText(singleSurvey.getListOfQuestionStrings().size());
-        return customView;
+        titleTxt.setText(s.getTitle());
+        questionsTxt.setText(s.getLength() + " Questions");
 
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TEST","You just clicked on an item");
+            }
+        });
+
+        return convertView;
     }
 }

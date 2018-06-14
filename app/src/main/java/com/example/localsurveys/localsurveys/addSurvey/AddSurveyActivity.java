@@ -50,7 +50,12 @@ public class AddSurveyActivity extends AppCompatActivity {
 
     public void createSurveyWithConfiguration(String title, String radius, long fromDate, long toDate) {
         int radiusDigit = Integer.parseInt(radius);
-        survey = new Survey(title, radiusDigit, new User(), fromDate, toDate);
+
+        survey.setTitle(title)
+                .setRadius(radiusDigit)
+                .setFromDate(fromDate)
+                .setToDate(toDate)
+                .setUser(new User());
     }
 
     public void addQuestionToSurvey(Question question) {
