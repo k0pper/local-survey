@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,25 +10,24 @@
 
         <ImageView
             android:layout_width="52dp"
-            android:layout_height="69dp"
+            android:layout_height="68dp"
             android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_equalizer_black_24dp"
-            android:tint="?attr/colorAccent" />
+            android:src="@drawable/ic_chevron_right_black_24dp"
+            android:tint="?android:attr/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="69dp"
+            android:layout_height="68dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
+                android:layout_height="68dp"
                 android:layout_marginRight="8dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/survey_name"
+                    android:id="@+id/question_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -41,15 +37,16 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/survey_questions"
+                    android:id="@+id/answer_options"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="TextView"
+                    android:layout_marginTop="3dp"
+                    android:text="answer_options"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

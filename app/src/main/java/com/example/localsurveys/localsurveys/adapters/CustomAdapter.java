@@ -2,6 +2,7 @@ package com.example.localsurveys.localsurveys.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,19 +55,25 @@ public class CustomAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(c).inflate(R.layout.survey_item, parent, false);
         }
 
-        final Survey s = (Survey) this.getItem(position);
+        final Survey survey = (Survey) this.getItem(position);
 
         TextView titleTxt = (TextView) convertView.findViewById(R.id.survey_name);
         TextView questionsTxt = (TextView) convertView.findViewById(R.id.survey_questions);
 
-        titleTxt.setText(s.getTitle());
-        questionsTxt.setText(s.getLength() + " Questions");
+        titleTxt.setText(survey.getTitle());
+        questionsTxt.setText(survey.getLength() + " Questions");
 
+        if (survey.isExpired()) {
+            titleTxt.append(" (expired)");
+            titleTxt.setTextColor(Color.GRAY);
+        } else {
+            titleTxt.setTextColor(Color.GREEN);
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDetailActivity(s);
+                showDetailActivity(survey);
             }
         });
 

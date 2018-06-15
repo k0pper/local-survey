@@ -101,6 +101,10 @@ public class Survey implements Serializable {
         return this;
     }
 
+    public boolean isExpired() {
+        return System.currentTimeMillis() > this.getToDate();
+    }
+
     public static Survey random() {
         Random r = new Random();
         char c = (char) (r.nextInt(26) + 'a');

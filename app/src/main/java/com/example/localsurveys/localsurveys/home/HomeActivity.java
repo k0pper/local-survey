@@ -61,7 +61,8 @@ public class HomeActivity extends AppCompatActivity
         initializeUI();
         setupFirebaseAndAdapter();
         handleIntent();
-        // showFragment(new SurveyOverviewFragment());
+        adapter = new CustomAdapter(HomeActivity.this, helper.retrieve());
+        surveyListView.setAdapter(adapter);
     }
 
     @Override

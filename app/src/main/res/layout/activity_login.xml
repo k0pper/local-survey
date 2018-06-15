@@ -8,15 +8,14 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="123dp"
-        android:layout_height="131dp"
+        android:layout_width="162dp"
+        android:layout_height="158dp"
         android:layout_marginTop="32dp"
-        android:tint="?attr/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_verified_user_black_24dp" />
+        app:srcCompat="@drawable/logincat" />
 
     <TextView
         android:id="@+id/textView4"

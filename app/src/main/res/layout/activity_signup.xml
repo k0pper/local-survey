@@ -9,15 +9,14 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="123dp"
-        android:layout_height="131dp"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
         android:layout_marginTop="32dp"
-        android:tint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_supervisor_account_black_24dp" />
+        app:srcCompat="@drawable/signupcat" />
 
     <TextView
         android:id="@+id/textView4"
