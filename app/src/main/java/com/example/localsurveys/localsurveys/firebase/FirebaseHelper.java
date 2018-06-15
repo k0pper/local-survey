@@ -4,31 +4,35 @@ import android.util.Log;
 
 import com.example.localsurveys.localsurveys.models.Survey;
 import com.example.localsurveys.localsurveys.models.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class FirebaseHelper {
 
+    FirebaseAuth auth;
     DatabaseReference db;
     Boolean saved = null;
     ArrayList<Survey> surveys = new ArrayList<>();
 
     public FirebaseHelper(DatabaseReference db) {
+        this.auth = FirebaseAuth.getInstance();
         this.db = db;
     }
 
-    public Boolean saveSurveyTest(Survey survey) {
-        if (survey == null) {
+    public Boolean saveSurvey(Survey survey, String email) {
+        if (survey == null || email == null) {
             saved = false;
         } else {
             try {
-                db.push().setValue(survey);
+                db.child(this.getFormattedMail(email)).child("surveys").push().setValue(survey);
                 saved = true;
             } catch (DatabaseException e) {
                 e.printStackTrace();
@@ -43,9 +47,24 @@ public class FirebaseHelper {
         if (user == null) {
             return false;
         } else {
-            db.child("User").push().setValue(user);
+            String childName = getFormattedMail(user.geteMail());
+            db.child("User").child(childName.toLowerCase()).setValue(user);
             return true;
         }
+    }
+
+    public String getFormattedMail(String email) {
+        String[] userSplitted = email.split("\\.");
+        StringBuilder childName = new StringBuilder();
+
+        for (int i = 0; i < userSplitted.length; ++i) {
+            if (i == userSplitted.length - 1) {
+                childName.append(userSplitted[i]);
+            } else {
+                childName.append(userSplitted[i]).append("DOT");
+            }
+        }
+        return childName.toString().toLowerCase();
     }
 
     //READ BY HOOKING ONTO DATABASE OPERATION CALLBACKS
@@ -68,9 +87,10 @@ public class FirebaseHelper {
 
     private void fetchData(DataSnapshot dataSnapshot) {
         surveys.clear();
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        for (DataSnapshot ds : dataSnapshot.child(getFormattedMail(auth.getCurrentUser().getEmail())).child("surveys").getChildren()) {
             Survey s = ds.getValue(Survey.class);
             surveys.add(s);
+            Log.d("TEST", "Key: " + ds.getKey());
         }
     }
 }

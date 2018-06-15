@@ -53,6 +53,9 @@
     <string name="private_mode">Private Mode</string>
     <string name="unlock_pro_version">Unlock PRO version</string>
     <string name="information">Information</string>
+    <string name="createSurvey">Create Survey</string>
+    <string name="addQuestion">Add a Question</string>
+    <string name="done">Yay!</string>
     <string name="version">0.1.0</string>
     <string name="creators">
         Lisa Manger\nAriane Kraus\nPhillip Bruck\nMihael Bandalo\nTim irgendwie\nAlexander Miller

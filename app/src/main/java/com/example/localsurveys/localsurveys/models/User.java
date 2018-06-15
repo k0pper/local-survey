@@ -1,9 +1,12 @@
 package com.example.localsurveys.localsurveys.models;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class User {
-//Nickname, Pro_User, Vorname, Nachname, E-Mail-Adresse
+public class User implements Serializable {
+    //Nickname, Pro_User, Vorname, Nachname, E-Mail-Adresse
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private boolean isProUser;
     private String firstName;
@@ -14,7 +17,7 @@ public class User {
 
     }
 
-    public User (String email) {
+    public User(String email) {
         this.id = UUID.randomUUID().toString();
         this.eMail = email;
         this.isProUser = false;

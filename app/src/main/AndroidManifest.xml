@@ -25,17 +25,28 @@
         </activity>
         <activity
             android:name=".home.HomeActivity"
-            android:label="Local Surveys"/>
+            android:label="Local Surveys" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.SignupActivity" />
-        <activity android:name=".addSurvey.AddSurveyActivity" />
         <activity android:name=".login.ResetPasswordActivity" />
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings" />
         <activity
             android:name=".info.InfoActivity"
-            android:label="@string/information"></activity>
+            android:label="@string/information" />
+        <activity
+            android:name=".createSurvey.CreateSurveyActivity"
+            android:label="@string/createSurvey" />
+        <activity
+            android:name=".createSurvey.AddQuestionActivity"
+            android:label="@string/addQuestion" />
+        <activity
+            android:name=".SurveyDoneActivity"
+            android:label="Yay!" />
+        <activity
+            android:name=".survey.SurveyDetailActivity"
+            android:label="@string/done" />
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -1,11 +1,17 @@
 package com.example.localsurveys.localsurveys.models;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class AnswerOption {
+public class AnswerOption implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String id;
     private String text;
+
+    public AnswerOption() {
+
+    }
 
     public AnswerOption(String text) {
         this.id = UUID.randomUUID().toString();

@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.adapters.CustomAdapter;
+import com.example.localsurveys.localsurveys.createSurvey.CreateSurveyActivity;
 import com.example.localsurveys.localsurveys.firebase.FirebaseHelper;
 import com.example.localsurveys.localsurveys.info.InfoActivity;
 import com.example.localsurveys.localsurveys.login.LoginActivity;
@@ -104,7 +105,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Navigate to Home Activity
         } else if (id == R.id.nav_start) {
-            // Navigate to Survey Start Activity
+            startActivity(new Intent(HomeActivity.this, CreateSurveyActivity.class));
         } else if (id == R.id.nav_find) {
             // Navigate to Find Survey Activity
         } else if (id == R.id.nav_settings) {
@@ -177,18 +178,11 @@ public class HomeActivity extends AppCompatActivity
     private void setupFirebaseAndAdapter() {
         Log.d("TEST", "Initializing Firebase");
         this.auth = FirebaseAuth.getInstance();
-        this.db = FirebaseDatabase.getInstance().getReference().child("Survey");
+        this.db = FirebaseDatabase.getInstance().getReference().child("User");
         this.helper = new FirebaseHelper(db);
         Log.d("TEST", "Initialized Firebase!");
         adapter = new CustomAdapter(this, helper.retrieve());
         surveyListView.setAdapter(adapter);
-    }
-
-    public void showFragment(Fragment fragment) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
     }
 
     private void getSurveys() {
@@ -199,7 +193,7 @@ public class HomeActivity extends AppCompatActivity
     public void saveSurvey(Survey survey) throws InterruptedException {
         Log.d("TEST", "Saving survey to Database ...");
         Boolean saved;
-        if (saved = helper.saveSurveyTest(survey)) {
+        if (saved = helper.saveSurvey(survey, "")) {
             getSurveys();
         }
         Log.d("TEST", "Saving success? : " + saved );

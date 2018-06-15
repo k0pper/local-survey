@@ -1,6 +1,8 @@
 package com.example.localsurveys.localsurveys.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,7 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.home.HomeActivity;
 import com.example.localsurveys.localsurveys.models.Survey;
+import com.example.localsurveys.localsurveys.survey.SurveyDetailActivity;
 
 import java.util.ArrayList;
 
@@ -62,10 +66,18 @@ public class CustomAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TEST","You just clicked on an item");
+                showDetailActivity(s);
             }
         });
 
         return convertView;
+    }
+
+    private void showDetailActivity(Survey s) {
+        Bundle b = new Bundle();
+        Intent i = new Intent (c, SurveyDetailActivity.class);
+        b.putSerializable("SURVEY", s);
+        i.putExtras(b);
+        c.startActivity(i);
     }
 }
