@@ -19,6 +19,9 @@ public class Survey implements Serializable {
     private User user;
     private ArrayList<Question> questions;
 
+    private double longitude;
+    private double latitude;
+
     public Survey() {
         this.id = UUID.randomUUID().toString();
         this.questions = new ArrayList<>();
@@ -99,6 +102,24 @@ public class Survey implements Serializable {
     public Survey setDuration(long duration) {
         this.duration = duration;
         return this;
+    }
+
+    public Survey setLatitude(double lat) {
+        this.latitude = lat;
+        return this;
+    }
+
+    public Survey setLongitude(double lng) {
+        this.longitude = lng;
+        return this;
+    }
+
+    public double getLatitude() {
+        return this.latitude;
+    }
+
+    public double getLongitude() {
+        return this.longitude;
     }
 
     public boolean isExpired() {

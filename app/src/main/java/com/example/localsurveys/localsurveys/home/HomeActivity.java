@@ -29,6 +29,7 @@ import com.example.localsurveys.localsurveys.login.LoginActivity;
 import com.example.localsurveys.localsurveys.models.Survey;
 import com.example.localsurveys.localsurveys.models.User;
 import com.example.localsurveys.localsurveys.settings.SettingsActivity;
+import com.example.localsurveys.localsurveys.survey.FindSurveysActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -104,11 +105,11 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Navigate to Home Activity
+            startActivity(new Intent(HomeActivity.this, HomeActivity.class));
         } else if (id == R.id.nav_start) {
             startActivity(new Intent(HomeActivity.this, CreateSurveyActivity.class));
         } else if (id == R.id.nav_find) {
-            // Navigate to Find Survey Activity
+            startActivity(new Intent (HomeActivity.this, FindSurveysActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {

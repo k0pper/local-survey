@@ -1,7 +1,15 @@
 package com.example.localsurveys.localsurveys.createSurvey;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.localsurveys.localsurveys.GPS_SERVICE;
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.SurveyDoneActivity;
 import com.example.localsurveys.localsurveys.firebase.FirebaseHelper;
@@ -36,16 +45,72 @@ public class AddQuestionActivity extends AppCompatActivity {
     DatabaseReference db;
     FirebaseAuth auth;
 
+    private BroadcastReceiver broadcastReceiver;
+    private double longitude;
+    private double latitude;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (broadcastReceiver == null) {
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    longitude = (double) intent.getExtras().get("COORD_LONGITUDE");
+                    latitude = (double) intent.getExtras().get("COORD_LATITUDE");
+                }
+            };
+        }
+        registerReceiver(broadcastReceiver, new IntentFilter("location_update"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterGpsService();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 100){
+            if( grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                enableFabDoneButton();
+            }else {
+                fabDone.setEnabled(false);
+                runtimePermission();
+            }
+        }
+    }
+
+    private boolean runtimePermission() {
+        // If Build Version > 23 and Location Permissions are NOT granted
+        if(Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            // Request permissions for GPS
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},100);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question);
         inflateToolbar();
+        startGpsService();
         initializeUI();
         initalizeFirebase();
         handleIntent();
+        if(!runtimePermission()) {
+            enableFabDoneButton();
+        }
+    }
+
+    private void startGpsService() {
+        Intent i = new Intent(getApplicationContext(), GPS_SERVICE.class);
+        startService(i);
     }
 
     private void inflateToolbar() {
@@ -59,6 +124,7 @@ public class AddQuestionActivity extends AppCompatActivity {
     private void initializeUI() {
         fabMore = findViewById(R.id.fabMore);
         fabDone = findViewById(R.id.fabDone);
+        fabDone.setEnabled(false);
         questionText = findViewById(R.id.questionText);
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
@@ -85,26 +151,6 @@ public class AddQuestionActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Question " + survey.getLength() + " added!", Toast.LENGTH_SHORT).show();
                 resetView();
                 Log.d("TEST", survey.toString());
-            }
-        });
-
-        fabDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (survey.getQuestions().size() == 0) {
-                    Toast.makeText(getApplicationContext(), "Add questions first!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Boolean saved;
-                String email = auth.getCurrentUser().getEmail();
-                long now = System.currentTimeMillis();
-                long surveyEnd = now + survey.getDuration();
-                survey.setFromDate(now);
-                survey.setToDate(surveyEnd);
-                if (saved = helper.saveSurvey(survey, email)) {
-                    Toast.makeText(getApplicationContext(), "Survey saved!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent (AddQuestionActivity.this, SurveyDoneActivity.class));
-                }
             }
         });
     }
@@ -144,5 +190,50 @@ public class AddQuestionActivity extends AppCompatActivity {
     public void onBackPressed() {
         Toast.makeText(getApplicationContext(), "All questions deleted", Toast.LENGTH_SHORT).show();
         super.onBackPressed();
+    }
+
+    private void updateSurvey() {
+        long now = System.currentTimeMillis();
+        long surveyEnd = now + survey.getDuration();
+        survey.setFromDate(now)
+                .setToDate(surveyEnd)
+                .setLatitude(latitude)
+                .setLongitude(longitude);
+    }
+
+    private void saveSurvey() {
+        String email = auth.getCurrentUser().getEmail();
+        if (helper.saveSurvey(survey, email)) {
+            Toast.makeText(getApplicationContext(), "Survey saved!", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(AddQuestionActivity.this, SurveyDoneActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("SURVEY", survey);
+            i.putExtras(b);
+            startActivity(i);
+        }
+    }
+
+    private void enableFabDoneButton() {
+        fabDone.setEnabled(true);
+        fabDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (survey.getQuestions().size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Add questions first!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                updateSurvey();
+                if (broadcastReceiver != null) {
+                    unregisterReceiver(broadcastReceiver);
+                }
+                saveSurvey();
+            }
+        });
+    }
+
+    private void unregisterGpsService() {
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
     }
 }
