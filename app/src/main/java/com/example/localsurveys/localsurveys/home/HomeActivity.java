@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.adapters.CustomAdapter;
 import com.example.localsurveys.localsurveys.createSurvey.CreateSurveyActivity;
+import com.example.localsurveys.localsurveys.findSurvey.findSurveyActivity;
 import com.example.localsurveys.localsurveys.firebase.FirebaseHelper;
 import com.example.localsurveys.localsurveys.info.InfoActivity;
 import com.example.localsurveys.localsurveys.login.LoginActivity;
@@ -34,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,12 +51,14 @@ public class HomeActivity extends AppCompatActivity
 
     private ArrayList<Survey> surveys;
     private ListView surveyListView;
+    private ArrayList<Survey> mockSurvey;
 
     // Firebase
     FirebaseAuth auth;
     DatabaseReference db;
     FirebaseHelper helper;
     CustomAdapter adapter;
+    CustomAdapter mockAdapter;
 
 
     @Override
@@ -61,8 +67,13 @@ public class HomeActivity extends AppCompatActivity
         initializeUI();
         setupFirebaseAndAdapter();
         handleIntent();
-        adapter = new CustomAdapter(HomeActivity.this, helper.retrieve());
-        surveyListView.setAdapter(adapter);
+        //adapter = new CustomAdapter(HomeActivity.this, helper.retrieve());
+        //surveyListView.setAdapter(adapter);
+
+        surveyListView = findViewById(R.id.survey_list);
+        //Firebase Workaround: sample survey will be added and displayed directly
+        mockSurvey = new ArrayList<>();
+        firebaseWorkaround();
     }
 
     @Override
@@ -108,7 +119,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_start) {
             startActivity(new Intent(HomeActivity.this, CreateSurveyActivity.class));
         } else if (id == R.id.nav_find) {
-            // Navigate to Find Survey Activity
+            startActivity(new Intent(HomeActivity.this, findSurveyActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {
@@ -143,6 +154,8 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Survey testSurvey = Survey.random();
+                //mock Array
+                mockSurvey.add(Survey.random());
                 try {
                     saveSurvey(testSurvey);
                 } catch (InterruptedException e) {
@@ -187,8 +200,9 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void getSurveys() {
-        adapter = new CustomAdapter(HomeActivity.this, helper.retrieve());
-        surveyListView.setAdapter(adapter);
+//        adapter = new CustomAdapter(HomeActivity.this, helper.retrieve());
+//        surveyListView.setAdapter(adapter);
+        firebaseWorkaround();
     }
 
     public void saveSurvey(Survey survey) throws InterruptedException {
@@ -198,6 +212,11 @@ public class HomeActivity extends AppCompatActivity
             getSurveys();
         }
         Log.d("TEST", "Saving success? : " + saved );
+    }
+
+    public void firebaseWorkaround(){
+        mockAdapter = new CustomAdapter(HomeActivity.this, mockSurvey);
+        surveyListView.setAdapter(mockAdapter);
     }
 
 }

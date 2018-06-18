@@ -29,7 +29,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Refresh"
+        android:text="@string/refresh"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -47,10 +47,10 @@
     <TextView
         android:id="@+id/create_survey_heading"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="17dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Your Surveys"
+        android:text="@string/yourSurveys"
         android:textColor="?attr/colorAccent"
         android:textSize="16sp"
         android:textStyle="bold"
