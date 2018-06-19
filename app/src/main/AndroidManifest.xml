@@ -49,7 +49,10 @@
             android:label="@string/done" />
         <activity
             android:name=".findSurvey.findSurveyActivity"
-            android:label="Find Surveys"/>
+            android:label="Find Surveys" />
+        <activity
+            android:name=".answerSurvey.AnswerSurveyActivity"
+            android:label="Answer Survey"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

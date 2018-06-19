@@ -6,50 +6,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
-import com.example.localsurveys.localsurveys.home.HomeActivity;
+import com.example.localsurveys.localsurveys.answerSurvey.AnswerSurveyActivity;
 import com.example.localsurveys.localsurveys.models.Survey;
-import com.example.localsurveys.localsurveys.survey.SurveyDetailActivity;
 
 import java.util.ArrayList;
 
-/**
- * Created by alexandermiller on 08.06.18.
- */
+public class SurveyToAnswerAdapter extends CustomAdapter {
 
-public class CustomAdapter extends BaseAdapter {
-    Context c;
-    ArrayList<Survey> surveys;
-
-    public CustomAdapter(){
-        //für die Vererbung
-    }
-
-    public CustomAdapter(Context c, ArrayList<Survey> surveys) {
+    public SurveyToAnswerAdapter(Context c, ArrayList<Survey> surveys) {
         this.c = c;
         this.surveys = surveys;
-    }
-
-    @Override
-    public int getCount() {
-        return surveys.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return surveys.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @NonNull
@@ -77,16 +49,17 @@ public class CustomAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDetailActivity(survey);
+                showAnswerSurveyActivity(survey);
             }
         });
 
         return convertView;
     }
 
-    private void showDetailActivity(Survey s) {
+    //statt SurveyDeteilActivity soll Umfrage Beantworten Activity gestartet werden
+    private void showAnswerSurveyActivity(Survey s) {
         Bundle b = new Bundle();
-        Intent i = new Intent (c, SurveyDetailActivity.class);
+        Intent i = new Intent (c, AnswerSurveyActivity.class);
         b.putSerializable("SURVEY", s);
         i.putExtras(b);
         c.startActivity(i);

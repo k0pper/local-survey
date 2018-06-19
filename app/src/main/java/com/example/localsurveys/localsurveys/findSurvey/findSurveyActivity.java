@@ -1,17 +1,23 @@
 package com.example.localsurveys.localsurveys.findSurvey;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.adapters.CustomAdapter;
+import com.example.localsurveys.localsurveys.adapters.SurveyToAnswerAdapter;
+import com.example.localsurveys.localsurveys.answerSurvey.AnswerSurveyActivity;
 import com.example.localsurveys.localsurveys.firebase.FirebaseHelper;
 import com.example.localsurveys.localsurveys.models.AnswerOption;
 import com.example.localsurveys.localsurveys.models.Question;
@@ -35,7 +41,9 @@ public class findSurveyActivity extends AppCompatActivity {
     DatabaseReference db;
     FirebaseHelper helper;
     CustomAdapter adapter;
-    CustomAdapter mockAdapter;
+    SurveyToAnswerAdapter mockAdapter;
+
+    public String sId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,23 @@ public class findSurveyActivity extends AppCompatActivity {
         mockSurvey = new ArrayList<>();
         createMockSurvey();
         firebaseWorkaround();
+
+        //Survey beantworten Teil - kann man weglassen, weil ist im extra adapter drin
+//        surveyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //die angeklickte Umfrage holen
+//                Survey sendSurvey = (Survey) mockAdapter.getItem(position);
+//
+//                Intent intent = new Intent(findSurveyActivity.this, AnswerSurveyActivity.class);
+//                //Id in das Intent packen
+//                intent.putExtra("surveyId", sendSurvey.getId());
+//                startActivity(intent);
+//
+//                //To get the data in second activity
+//                //getIntent().getExtras().getString("Key")
+//            }
+//        });
     }
 
     public void initializeUI() {
@@ -122,7 +147,7 @@ public class findSurveyActivity extends AppCompatActivity {
     }
 
     public void firebaseWorkaround(){
-        mockAdapter = new CustomAdapter(findSurveyActivity.this, mockSurvey);
+        mockAdapter = new SurveyToAnswerAdapter(findSurveyActivity.this, mockSurvey);
         surveyListView.setAdapter(mockAdapter);
     }
 
