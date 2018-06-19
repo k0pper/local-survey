@@ -106,6 +106,10 @@ public class Survey implements Serializable {
     }
 
     public static Survey random() {
+        Question q = new Question("dummy Titel");
+                q.addAnswerOption(new AnswerOption("Answer 1"));
+                q.addAnswerOption(new AnswerOption("Answer 2"));
+
         Random r = new Random();
         char c = (char) (r.nextInt(26) + 'a');
 
@@ -114,7 +118,8 @@ public class Survey implements Serializable {
                 .setFromDate(r.nextLong())
                 .setToDate(r.nextLong())
                 .setUser(new User("testuser@gmx.de"))
-                .setRadius(r.nextInt());
+                .setRadius(r.nextInt())
+                .addQuestion(q);
 
         return s;
     }

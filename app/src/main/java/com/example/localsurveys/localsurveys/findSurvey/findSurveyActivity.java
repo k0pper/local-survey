@@ -40,7 +40,9 @@ public class findSurveyActivity extends AppCompatActivity {
 
     DatabaseReference db;
     FirebaseHelper helper;
+
     CustomAdapter adapter;
+    //den hier benutzen um Umfragen durch Klick starten zu können
     SurveyToAnswerAdapter mockAdapter;
 
     public String sId;
@@ -58,23 +60,6 @@ public class findSurveyActivity extends AppCompatActivity {
         mockSurvey = new ArrayList<>();
         createMockSurvey();
         firebaseWorkaround();
-
-        //Survey beantworten Teil - kann man weglassen, weil ist im extra adapter drin
-//        surveyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //die angeklickte Umfrage holen
-//                Survey sendSurvey = (Survey) mockAdapter.getItem(position);
-//
-//                Intent intent = new Intent(findSurveyActivity.this, AnswerSurveyActivity.class);
-//                //Id in das Intent packen
-//                intent.putExtra("surveyId", sendSurvey.getId());
-//                startActivity(intent);
-//
-//                //To get the data in second activity
-//                //getIntent().getExtras().getString("Key")
-//            }
-//        });
     }
 
     public void initializeUI() {
