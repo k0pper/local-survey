@@ -42,8 +42,11 @@ public class FindSurveysActivity extends AppCompatActivity {
     //Mock Umfrage anzeigen lassen - Showzwecke für die Answer Activity
     private ListView liveSurveys;
     private ArrayList<Survey> mockSurveys;
+
+    //Umfrage lässt sich beim LiveSurveyAdapter nicht starten (wieso auch immer)
     private SurveyToAnswerAdapter mockAdapter;
-    // HIer
+//    private LiveSurveysAdapter mockAdapter;
+
 
     @Override
     protected void onResume() {
@@ -161,6 +164,7 @@ public class FindSurveysActivity extends AppCompatActivity {
         mockSurveys = new ArrayList<>();
         createMockSurvey();
         mockAdapter = new SurveyToAnswerAdapter(FindSurveysActivity.this, mockSurveys);
+//        mockAdapter = new LiveSurveysAdapter(FindSurveysActivity.this, mockSurveys);
         liveSurveys.setAdapter(mockAdapter);
     }
 
