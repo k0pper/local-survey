@@ -1,6 +1,7 @@
 package com.example.localsurveys.localsurveys.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.answerSurvey.AnswerSurveyActivity;
 import com.example.localsurveys.localsurveys.models.AnswerOption;
 import com.example.localsurveys.localsurveys.models.Question;
 import com.example.localsurveys.localsurveys.models.Survey;
@@ -75,6 +77,10 @@ public class LiveSurveysAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
 
+                //Bei Klick soll die Activity gestartet werden
+                Intent i = new Intent (c, AnswerSurveyActivity.class);
+                i.putExtra("SURVEY",s);
+                c.startActivity(i);
             }
         });
 

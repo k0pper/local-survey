@@ -82,7 +82,7 @@ public class FindSurveysActivity extends AppCompatActivity {
     private void initializeUI() {
         scanButton = findViewById(R.id.scan_button);
         stopButton = findViewById(R.id.stop_button);
-        coordsText = findViewById(R.id.coords);
+        //coordsText = findViewById(R.id.coords);
         spinner = findViewById(R.id.spinner);
     }
 
