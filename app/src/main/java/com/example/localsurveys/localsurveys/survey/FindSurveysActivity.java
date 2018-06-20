@@ -23,16 +23,20 @@ import com.example.localsurveys.localsurveys.GPS_SERVICE;
 import com.example.localsurveys.localsurveys.R;
 import com.example.localsurveys.localsurveys.adapters.LiveSurveysAdapter;
 import com.example.localsurveys.localsurveys.adapters.SurveyToAnswerAdapter;
+import com.example.localsurveys.localsurveys.firebase.FirebaseHelper;
+import com.example.localsurveys.localsurveys.home.HomeActivity;
 import com.example.localsurveys.localsurveys.models.AnswerOption;
 import com.example.localsurveys.localsurveys.models.Question;
 import com.example.localsurveys.localsurveys.models.Survey;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 public class FindSurveysActivity extends AppCompatActivity {
 
     private Button scanButton, stopButton;
-//    private TextView coordsText;
     private BroadcastReceiver broadcastReceiver;
     private ProgressBar spinner;
 
@@ -40,12 +44,13 @@ public class FindSurveysActivity extends AppCompatActivity {
     private double latitude;
 
     //Mock Umfrage anzeigen lassen - Showzwecke für die Answer Activity
-    private ListView liveSurveys;
-    private ArrayList<Survey> mockSurveys;
+    private ListView listViewSurveys;
+    private ArrayList<Survey> visibleSurveys;
 
-    //Umfrage lässt sich beim LiveSurveyAdapter nicht starten (wieso auch immer)
-    private SurveyToAnswerAdapter mockAdapter;
-//    private LiveSurveysAdapter mockAdapter;
+    private LiveSurveysAdapter liveSurveysAdapter;
+
+    private DatabaseReference db;
+    private FirebaseHelper helper;
 
 
     @Override
@@ -71,11 +76,10 @@ public class FindSurveysActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_surveys);
         initializeUI();
-
-        mockUmfrageAnzeigen();
-
-        if(!runtimePermission()) {
+        initializeFirebase();
+        if (!runtimePermission()) {
             enableButtons();
+            startGpsService();
         }
     }
 
@@ -85,15 +89,16 @@ public class FindSurveysActivity extends AppCompatActivity {
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
+        stopGpsService();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 100){
-            if( grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 100) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 enableButtons();
-            }else {
+            } else {
                 runtimePermission();
             }
         }
@@ -110,13 +115,19 @@ public class FindSurveysActivity extends AppCompatActivity {
         stopButton = findViewById(R.id.stop_button);
 //        coordsText = findViewById(R.id.coords);
         spinner = findViewById(R.id.spinner);
+        listViewSurveys = findViewById(R.id.live_surveys);
+    }
+
+    private void initializeFirebase() {
+        this.db = FirebaseDatabase.getInstance().getReference();
+        this.helper = new FirebaseHelper(db);
     }
 
     private boolean runtimePermission() {
         // If Build Version > 23 and Location Permissions are NOT granted
-        if(Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Request permissions for GPS
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},100);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
             return true;
         }
         return false;
@@ -126,26 +137,44 @@ public class FindSurveysActivity extends AppCompatActivity {
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spinner.setVisibility(View.VISIBLE);
-                stopButton.setVisibility(View.VISIBLE);
-                scanButton.setVisibility(View.INVISIBLE);
-                Log.d("TEST", "Started Service");
-                Intent i = new Intent(getApplicationContext(), GPS_SERVICE.class);
-                startService(i);
+                setLoading();
+                liveSurveysAdapter = new LiveSurveysAdapter(FindSurveysActivity.this, helper.retrieveVisibleSurveys(longitude, latitude));
+                listViewSurveys.setAdapter(liveSurveysAdapter);
+                setNoLoading();
             }
         });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spinner.setVisibility(View.INVISIBLE);
-                stopButton.setVisibility(View.INVISIBLE);
-                scanButton.setVisibility(View.VISIBLE);
-                Intent i = new Intent(getApplicationContext(),GPS_SERVICE.class);
-                stopService(i);
+                setNoLoading();
             }
         });
 
+    }
+
+    private void setNoLoading() {
+        Log.d("TEST", "Loading stopped");
+        spinner.setVisibility(View.INVISIBLE);
+        scanButton.setVisibility(View.VISIBLE);
+    }
+
+    private void stopGpsService() {
+        Log.d("TEST", "Stopped Service");
+        Intent i = new Intent(getApplicationContext(), GPS_SERVICE.class);
+        stopService(i);
+    }
+
+    private void setLoading() {
+        Log.d("TEST", "Loading started");
+        spinner.setVisibility(View.VISIBLE);
+        scanButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void startGpsService() {
+        Log.d("TEST", "Started Service");
+        Intent i = new Intent(getApplicationContext(), GPS_SERVICE.class);
+        startService(i);
     }
 
     @Override
@@ -159,34 +188,4 @@ public class FindSurveysActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void mockUmfrageAnzeigen(){
-        liveSurveys = findViewById(R.id.listView2);
-        mockSurveys = new ArrayList<>();
-        createMockSurvey();
-        mockAdapter = new SurveyToAnswerAdapter(FindSurveysActivity.this, mockSurveys);
-//        mockAdapter = new LiveSurveysAdapter(FindSurveysActivity.this, mockSurveys);
-        liveSurveys.setAdapter(mockAdapter);
-    }
-
-    public void createMockSurvey(){
-
-        Survey s1 = new Survey();
-        s1.setTitle("How are you?");
-        s1.setDuration(60 * 60000);
-        s1.setRadius(50);
-        s1.setFromDate(System.currentTimeMillis());
-        s1.setToDate(s1.getFromDate() + s1.getDuration());
-
-        Question q1 = new Question("How was lunch?");
-        q1.addAnswerOption(new AnswerOption("awesome"));
-        q1.addAnswerOption(new AnswerOption("soso"));
-        s1.addQuestion(q1);
-
-        Question q2 = new Question(("And your day?"));
-        q2.addAnswerOption(new AnswerOption("I need coffee"));
-        q2.addAnswerOption(new AnswerOption("I need sleep"));
-        s1.addQuestion(q2);
-
-        mockSurveys.add(s1);
-    }
 }

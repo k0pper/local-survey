@@ -77,8 +77,8 @@ public class LiveSurveysAdapter extends BaseAdapter{
             unit = "Minutes";
             result = (int) difference / 60000;
         }
-        publishedTxt.setText("Published " + result + " " + unit + " ago");
-        creatorTxt.setText("Testemail");
+        publishedTxt.setText(result + " " + unit + " ago");
+        creatorTxt.setText("bla@bla.de");
 
 
         convertView.setOnClickListener(new View.OnClickListener() {

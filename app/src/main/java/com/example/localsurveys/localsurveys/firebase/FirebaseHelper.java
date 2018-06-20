@@ -5,12 +5,10 @@ import android.util.Log;
 import com.example.localsurveys.localsurveys.models.Survey;
 import com.example.localsurveys.localsurveys.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -91,6 +89,37 @@ public class FirebaseHelper {
             Survey s = ds.getValue(Survey.class);
             surveys.add(s);
             Log.d("TEST", "Key: " + ds.getKey());
+        }
+    }
+
+    public ArrayList<Survey> retrieveVisibleSurveys(final double longitude, final double latitude) {
+        db.addValueEventListener(new ValueEventListener() {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                double lng = longitude;
+                double lat = latitude;
+                Log.d("TEST", "Fetching visibles with " + lng + " " + lat);
+                fetchVisibles(dataSnapshot, lng, lat);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return surveys;
+    }
+
+    private void fetchVisibles(DataSnapshot dataSnapshot, double lng, double lat) {
+        surveys.clear();
+        for (DataSnapshot userSnapshot : dataSnapshot.child("User").getChildren()) {
+            DataSnapshot surveysOfUserSnapshot = userSnapshot.child("surveys");
+            for (DataSnapshot surveySnapshot : surveysOfUserSnapshot.getChildren()) {
+                Survey iterateSurvey = surveySnapshot.getValue(Survey.class);
+                if (iterateSurvey.isVisibleFrom(lng, lat)) {
+                    surveys.add(iterateSurvey);
+                }
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.example.localsurveys.localsurveys.models;
 
+import android.location.Location;
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +146,13 @@ public class Survey implements Serializable {
                 .addQuestion(q);
 
         return s;
+    }
+
+    public boolean isVisibleFrom(double lng, double lat) {
+        float[] f = new float[1];
+        Location.distanceBetween(this.getLatitude(), this.getLongitude(), lat, lng, f);
+        Log.d("TEST", "Distance is " + f[0]);
+        return (f[0] > this.getRadius()) && !this.isExpired();
     }
 
 }
