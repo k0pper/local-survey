@@ -3,6 +3,7 @@ package com.example.localsurveys.localsurveys.answerSurvey;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,6 +65,8 @@ public class AnswerSurveyActivity extends AppCompatActivity {
     }
 
     public void initializeUI() {
+        Log.d("TEST", "Started Answer Service");
+
         setContentView(R.layout.activity_answer_survey);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

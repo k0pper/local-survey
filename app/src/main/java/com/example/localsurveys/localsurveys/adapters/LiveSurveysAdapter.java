@@ -2,6 +2,7 @@ package com.example.localsurveys.localsurveys.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,13 @@ public class LiveSurveysAdapter extends BaseAdapter{
     ArrayList<Survey> surveys;
     Context c;
     TextView titleTxt, questionsTxt, creatorTxt, publishedTxt;
+
+    public LiveSurveysAdapter(){}
+
+    public LiveSurveysAdapter(Context c, ArrayList<Survey> surveys) {
+        this.c = c;
+        this.surveys = surveys;
+    }
 
     @Override
     public int getCount() {
@@ -77,13 +85,20 @@ public class LiveSurveysAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
 
-                //Bei Klick soll die Activity gestartet werden
-                Intent i = new Intent (c, AnswerSurveyActivity.class);
-                i.putExtra("SURVEY",s);
-                c.startActivity(i);
+                Log.d("TEST", "Clicked ListItem");
+                showAnswerSurveyActivity(s);
             }
         });
 
         return convertView;
+    }
+
+    private void showAnswerSurveyActivity(Survey s) {
+        //Bundle b = new Bundle();
+        Intent i = new Intent (c, AnswerSurveyActivity.class);
+        //b.putSerializable("SURVEY", s);
+        //i.putExtras(b);
+        i.putExtra("SURVEY",s);
+        c.startActivity(i);
     }
 }

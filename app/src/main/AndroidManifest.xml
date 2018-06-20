@@ -54,6 +54,9 @@
         <activity
             android:name=".survey.FindSurveysActivity"
             android:label="@string/done" />
+        <activity
+            android:name=".answerSurvey.AnswerSurveyActivity"
+            android:label="Answer Survey"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

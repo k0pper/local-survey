@@ -12,23 +12,38 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.example.localsurveys.localsurveys.GPS_SERVICE;
 import com.example.localsurveys.localsurveys.R;
+import com.example.localsurveys.localsurveys.adapters.LiveSurveysAdapter;
+import com.example.localsurveys.localsurveys.adapters.SurveyToAnswerAdapter;
+import com.example.localsurveys.localsurveys.models.AnswerOption;
+import com.example.localsurveys.localsurveys.models.Question;
+import com.example.localsurveys.localsurveys.models.Survey;
+
+import java.util.ArrayList;
 
 public class FindSurveysActivity extends AppCompatActivity {
 
     private Button scanButton, stopButton;
-    private TextView coordsText;
+//    private TextView coordsText;
     private BroadcastReceiver broadcastReceiver;
     private ProgressBar spinner;
 
     private double longitude;
     private double latitude;
+
+    //Mock Umfrage anzeigen lassen - Showzwecke für die Answer Activity
+    private ListView liveSurveys;
+    private ArrayList<Survey> mockSurveys;
+    private SurveyToAnswerAdapter mockAdapter;
+    // HIer
 
     @Override
     protected void onResume() {
@@ -39,7 +54,7 @@ public class FindSurveysActivity extends AppCompatActivity {
                 public void onReceive(Context context, Intent intent) {
                     longitude = (double) intent.getExtras().get("COORD_LONGITUDE");
                     latitude = (double) intent.getExtras().get("COORD_LATITUDE");
-                    coordsText.append("\n" + longitude + " " + latitude );
+//                    coordsText.append("\n" + longitude + " " + latitude );
                     Log.d("TEST", "Longitude: " + longitude);
                     Log.d("TEST", "Latitude: " + latitude);
                 }
@@ -53,6 +68,8 @@ public class FindSurveysActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_surveys);
         initializeUI();
+
+        mockUmfrageAnzeigen();
 
         if(!runtimePermission()) {
             enableButtons();
@@ -80,9 +97,15 @@ public class FindSurveysActivity extends AppCompatActivity {
     }
 
     private void initializeUI() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         scanButton = findViewById(R.id.scan_button);
         stopButton = findViewById(R.id.stop_button);
-        //coordsText = findViewById(R.id.coords);
+//        coordsText = findViewById(R.id.coords);
         spinner = findViewById(R.id.spinner);
     }
 
@@ -95,7 +118,6 @@ public class FindSurveysActivity extends AppCompatActivity {
         }
         return false;
     }
-
 
     private void enableButtons() {
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -121,5 +143,46 @@ public class FindSurveysActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void mockUmfrageAnzeigen(){
+        liveSurveys = findViewById(R.id.listView2);
+        mockSurveys = new ArrayList<>();
+        createMockSurvey();
+        mockAdapter = new SurveyToAnswerAdapter(FindSurveysActivity.this, mockSurveys);
+        liveSurveys.setAdapter(mockAdapter);
+    }
+
+    public void createMockSurvey(){
+
+        Survey s1 = new Survey();
+        s1.setTitle("How are you?");
+        s1.setDuration(60 * 60000);
+        s1.setRadius(50);
+        s1.setFromDate(System.currentTimeMillis());
+        s1.setToDate(s1.getFromDate() + s1.getDuration());
+
+        Question q1 = new Question("How was lunch?");
+        q1.addAnswerOption(new AnswerOption("awesome"));
+        q1.addAnswerOption(new AnswerOption("soso"));
+        s1.addQuestion(q1);
+
+        Question q2 = new Question(("And your day?"));
+        q2.addAnswerOption(new AnswerOption("I need coffee"));
+        q2.addAnswerOption(new AnswerOption("I need sleep"));
+        s1.addQuestion(q2);
+
+        mockSurveys.add(s1);
     }
 }
