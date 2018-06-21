@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\AlexanderMiller\AndroidStudioProjects\local-survey\App.iml" filepath="C:\Users\AlexanderMiller\AndroidStudioProjects\local-survey\App.iml" />
-      <module fileurl="file://C:\..\AlexanderMiller\AndroidStudioProjects\local-survey\App.iml" filepath="C:\..\AlexanderMiller\AndroidStudioProjects\local-survey\App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Survey.iml" filepath="$PROJECT_DIR$/Survey.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/local-survey.iml" filepath="$PROJECT_DIR$/local-survey.iml" />
     </modules>
   </component>
 </project>
